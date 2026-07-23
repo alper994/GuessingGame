@@ -17,7 +17,7 @@ if "game_finished" not in st.session_state:
     st.session_state.game_finished = False
 
 
-# Eingabefeld
+# Eingabe
 guess = st.number_input(
     "Guess a number between 1-100:",
     min_value=1,
@@ -35,28 +35,33 @@ if st.button("Guess"):
     else:
         st.session_state.guess_number += 1
 
+        # Richtige Antwort
         if guess == st.session_state.secret_number:
             st.success(
                 f"🎉 {guess} is correct! You win!"
             )
             st.session_state.game_finished = True
 
+
+        # Letzter Versuch verloren
+        elif st.session_state.guess_number >= GUESS_LIMIT:
+            st.error(
+                f"😢 You lose! The number was {st.session_state.secret_number}."
+            )
+            st.session_state.game_finished = True
+
+
+        # Noch Versuche vorhanden
         elif guess > st.session_state.secret_number:
             st.warning(
                 f"{guess} is too high! Try again."
             )
 
+
         else:
             st.warning(
                 f"{guess} is too low! Try again."
             )
-
-
-        if st.session_state.guess_number >= GUESS_LIMIT and guess != st.session_state.secret_number:
-            st.error(
-                f"😢 You lose! The number was {st.session_state.secret_number}."
-            )
-            st.session_state.game_finished = True
 
 
 # Anzeige der Versuche
